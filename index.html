@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0" />
+		<title>My Weather Dashboard</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400&family=Merriweather:wght@700&display=swap"
+			rel="stylesheet" />
+		<link
+			rel="stylesheet"
+			href=".jass.css" />
+		<link
+			rel="stylesheet"
+			href=".style.css" />
+	</head>
+    <body>
+				<h1 class="text-primary">Search for weather by city</h1>
+				<form
+					id="searcher"
+					class="searcher">
+					<input
+						id="searcher-input"
+						class="searcher-input w-100"
+						type="text"
+						placeholder="type a city name here" />
+
+					<button class="btn btn-info btn-block">Search!</button>
+				</form>
+
+
+
+		<script src=".script.js"></script>
+	</body>
+</html>
+
+
+
+
+<!-- /*
+
+    - rough in the elements in HTML, style is less important
+
+*/
+
+/*
+  2. Declare variables: DOM hooks
+    - In the Javascript, create variables for each of the DOM elements that will display feedback
+    - create variables for the elements that will receive input
+    - set each variable to its DOM element like:
+    
+    var theElement = document.querySelector([CSS Selector for your element]);
+ */
+
+/*
+ 3. Declare variables: state
+    - What are the datq that need to be kept track of? 
+    - Global state variables sometimes emerge while working on event handlers (i.e., it
+      becomes clearer what needs to be tracked across the application)
+    - state variables:
+      "State describes the status of the entire program or an individual
+       object. It could be text, a number, a boolean, or another data type.
+
+       It’s a common tool for coordinating code. For example, once you update state, a bunch of different functions can instantly react to that change."
+       https://www.freecodecamp.org/news/state-in-javascript-explained-by-cooking-a-simple-meal-2baf10a787ee/
+    - Does the state variable need to be global (i.e., used by all the event handlers) or does it only need to be local
+      to the event handler?
+*/
+
+/*
+ 4. Declare variables: constants
+    - What are the data the application needs that won't change?
+    - e.g. Math constants, pre-created content (maybe the questions and answers?)
+*/
+
+/*
+ 5. Identify events
+    - Based on the variables created in Step 2, create event handlers
+
+      theElement.addeventListener([EVENT TYPE], function(event){
+        // do stuff here...
+      })
+
+    ...where [EVENT TYPE] is "click" or "change" or "keydown" or whatver
+
+    - Identify the things that should happen in the click handlers
+    - Rememember: there is always a page load event. Usually have a function for anything
+      that needs setting up at the beginning, before people interact with the 
+      page. Start the execution of this setup function at the bottom of page
+*/
+
+/*
+ 6. Refactor
+    - identify tasks that can be broken into their own functions, outside the event handlers
+    - Are there tasks that more than one event handler share?
+*/ -->
