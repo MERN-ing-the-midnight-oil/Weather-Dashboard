@@ -14,6 +14,8 @@ function handleSearcherSubmit(event) {
 	//console.log(InputVal)
 	console.log(InputVal.value);
 	console.log(InputVal);
+	console.log("some stuff");
+
 	// var Latitude = sets "Latitude" to the latitude of the city the user chose
 
 	// var Longitude = sets "Longitude" to the longitude of the city the user chose
