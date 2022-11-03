@@ -4,31 +4,37 @@ var searcherEl = document.querySelector("#searcher");
 //DOM hooks for elements that will display feedback
 var forcastEl = document.querySelector("#forcast");
 
-
-
 function handleSearcherSubmit(event) {
-	//listening to submit event on the form
-	var cityInput = document.querySelector("#searcher-input").value; ////gets what the user types in
+	//takes the submit event and does stuff with it
+	var cityInput = document.querySelector("#searcher-input").value; ////gets the text (city) the user types in
+	var rhysApiKey = "8efdcf6890084b049f69cd42d7792cd8";
 	event.preventDefault();
-	console.log(cityInput + " is the inputted text");
+	function getLatLon() {
+		var latLonQueryUrl =
+			"http://api.openweathermap.org/geo/1.0/direct?q=" +
+			cityInput +
+			",&appid=" +
+			rhysApiKey;
+		console.log(latLonQueryUrl);
+
+		fetch(latLonQueryUrl)
+        .then(function (response) {
+			if (!response.ok) {
+				throw response.json();
+			}
+		});
+		return response.json(); //returns a javascript object that is rehydrated from json
+	
+        }
+	    .then(function (coordinates) { //maybe this names the function response "coordinates"?
+            console.log("the coordinates are "+coordinates);
+	    }
+	getLatLon(); //whats wrong with calling gtLatLon at this point?
 }
 searcherEl.addEventListener("submit", handleSearcherSubmit); // executes the above event handler function when a form submit happens
 
-var openWeatherKey = "8efdcf6890084b049f69cd42d7792cd8"
-
-function getLatLon(){} //Does this work yet?
-    latLonQueryUrl = "http://api.openweathermap.org/geo/1.0/direct?q="+cityInput+",&limit=5&appid="+openWeatherKey
-
-fetch(latLonQueryUrl)//maybe this works now?
-.then(function (response) {
-    if (!response.ok) {
-        throw response.json(); //throw error
-    }
-    return response.json();
-//maybe do a .then(function 
-//then update the DOM 
-
-
+//maybe  do a .then(function
+//then update the DOM
 
 //Put in a function to update the DOM with query results
 
@@ -43,4 +49,4 @@ fetch(latLonQueryUrl)//maybe this works now?
 
 //var lat =
 //var lon =
-//var Key =      //API key
+//var Key =      //API ke
