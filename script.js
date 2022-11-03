@@ -8,13 +8,9 @@ var cities = [];
 
 function handleSearcherSubmit(event) {
 	//listening to submit event on the form
-	//var InputVal = document.querySelector("#searcher-input").value; ////gets what the user types in
-	var InputVal = document.getElementById("searchBtn");
-
-	//console.log(InputVal)
-	console.log(InputVal.value);
-	console.log(InputVal);
-	console.log("some stuff");
+	var InputText = document.querySelector("#searcher-input").value; ////gets what the user types in
+	event.preventDefault();
+	console.log(InputText + " is the inputted text");
 
 	// var Latitude = sets "Latitude" to the latitude of the city the user chose
 
