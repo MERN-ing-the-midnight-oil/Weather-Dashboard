@@ -18,17 +18,19 @@ function handleSearcherSubmit(event) {
 		console.log(latLonQueryUrl);
 
 		fetch(latLonQueryUrl)
-        .then(function (response) {
-			if (!response.ok) {
-				throw response.json();
-			}
-		});
-		return response.json(); //returns a javascript object that is rehydrated from json
-	
+        .then
+        (function (response) 
+            {
+                if (!response.ok) {
+                    throw response.json();
+                }
+            return response.json(); 
+            }
+        );
         }
-	    .then(function (coordinates) { //maybe this names the function response "coordinates"?
+	    .then(function (coordinates) { //hopefully sets the response to a var called "coordinates"
             console.log("the coordinates are "+coordinates);
-	    }
+	    })
 	getLatLon(); //whats wrong with calling gtLatLon at this point?
 }
 searcherEl.addEventListener("submit", handleSearcherSubmit); // executes the above event handler function when a form submit happens
