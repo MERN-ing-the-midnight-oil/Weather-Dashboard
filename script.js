@@ -1,8 +1,13 @@
 //Dom hooks for elements that will take input
 var searcherEl = document.querySelector("#searcher");
-
+var cardContainerEl = document.querySelector(".cardContainer");
 //DOM hooks for elements that will display feedback
-var forcastEl = document.querySelector("#forcast");
+var todayEl = document.querySelector(".today");
+var tomorrowEl = document.querySelector("#tomorrow");
+var dayThreeEl = document.querySelector("#dayThree");
+var dayFourEl = document.querySelector("#dayFour");
+var dayFiveEl = document.querySelector("#dayFive");
+
 var rhysApiKey = "8efdcf6890084b049f69cd42d7792cd8";
 
 function handleSearcherSubmit(event) {
@@ -40,7 +45,7 @@ function handleSearcherSubmit(event) {
 }
 
 function getWeather(lat, lon) {
-	//receives lat and lon as first and second thing passed
+	//receives lat and lon as first and second things passed
 	var weatherQueryURL =
 		"http://api.openweathermap.org/data/2.5/forecast?lat=" +
 		lat +
@@ -64,19 +69,28 @@ function getWeather(lat, lon) {
 }
 
 function putWeatherinDOM(weatherstuff) {
-	//receives the weather object and renames it just for fun
-	var firstDayDate = weatherstuff.list[0].dt_txt; //use brackets to drill down on array, dot notation to drill down on objects
-	forcastEl.append(firstDayDate);
+	//receives the weather object as an argument (renaming it is optional)
+	for (let i = 0; i < 35; i = i + 8) {
+		var city = weatherstuff.city.name;
+		var date = weatherstuff.list[i].dt_txt;
+		var tempK = weatherstuff.list[i].main.temp;
+		var tempF = (tempK - 273.15) * (9 / 5) + 32;
+		var wind = weatherstuff.list[i].wind.speed;
+		var humidity = weatherstuff.list[i].main.humidity;
+		var cardDiv = document.createElement("div");
+		var lineOne = document.createElement("p");
+		lineOne.innerHTML = date;
+		var lineTwo = document.createElement("p");
+		lineTwo.innerHTML = "Temperature: " + Math.round(tempF) + " (Farenheit)";
+		var lineThree = document.createElement("p");
+		lineThree.innerHTML = "Wind Speed: " + wind + "MPH";
+		var lineFour = document.createElement("p");
+		lineFour.innerHTML = "Humidity: " + humidity + "%";
+		cardDiv.appendChild(lineOne);
+		cardDiv.appendChild(lineTwo);
+		cardDiv.appendChild(lineThree);
+		cardDiv.appendChild(lineFour);
+		cardContainerEl.appendChild(cardDiv);
+	}
 }
-
 searcherEl.addEventListener("submit", handleSearcherSubmit); // executes handleSearcherSubmit when a form submit happens to searcherEl
-
-//Put in a function to update the DOM with query results
-
-/////////////
-
-//API call for lat and long exampl
-// http://api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid={API key}
-
-//API call for weather format
-//api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
