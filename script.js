@@ -80,13 +80,13 @@ function putWeatherinDOM(weatherstuff) {
 		var cardDiv = document.createElement("div");
 		cardDiv.classList.add("individualCard"); //trhying this out
 
-		var lineOne = document.createElement("p");
+		var lineOne = document.createElement("div");
 		lineOne.innerHTML = date;
-		var lineTwo = document.createElement("p");
+		var lineTwo = document.createElement("div");
 		lineTwo.innerHTML = "Temperature: " + Math.round(tempF) + " (Farenheit)";
-		var lineThree = document.createElement("p");
+		var lineThree = document.createElement("div");
 		lineThree.innerHTML = "Wind Speed: " + wind + "MPH";
-		var lineFour = document.createElement("p");
+		var lineFour = document.createElement("div");
 		lineFour.innerHTML = "Humidity: " + humidity + "%";
 		cardDiv.appendChild(lineOne);
 		cardDiv.appendChild(lineTwo);

@@ -10,9 +10,9 @@ body {
   margin: 4 px;
 }
 .individualCard{
-  border: 1px solid #000000;
-  padding: 30 px;
-  margin: 50 px
-  background-color #3506f0;
-
+  border: 3px solid #42f207;
+  padding: 10px;
+  margin: 20px;
+  background-color: blue;
+/* only the border seems to be working? */
 }
