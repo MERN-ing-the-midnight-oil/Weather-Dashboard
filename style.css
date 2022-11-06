@@ -3,8 +3,16 @@ body {
     display: inline-block;
   }
 .cardContainer {
-  border: 1pg solid #000;
+  border: 1px solid #f00606;
   display: inline-block;
+  display: flex;
   padding: 15 px;
   margin: 4 px;
+}
+.individualCard{
+  border: 1px solid #000000;
+  padding: 30 px;
+  margin: 50 px
+  background-color #3506f0;
+
 }

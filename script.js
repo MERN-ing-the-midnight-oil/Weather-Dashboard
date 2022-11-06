@@ -78,6 +78,8 @@ function putWeatherinDOM(weatherstuff) {
 		var wind = weatherstuff.list[i].wind.speed;
 		var humidity = weatherstuff.list[i].main.humidity;
 		var cardDiv = document.createElement("div");
+		cardDiv.classList.add("individualCard"); //trhying this out
+
 		var lineOne = document.createElement("p");
 		lineOne.innerHTML = date;
 		var lineTwo = document.createElement("p");
@@ -94,3 +96,4 @@ function putWeatherinDOM(weatherstuff) {
 	}
 }
 searcherEl.addEventListener("submit", handleSearcherSubmit); // executes handleSearcherSubmit when a form submit happens to searcherEl
+//cardDiv.classList.add("individualCard");
