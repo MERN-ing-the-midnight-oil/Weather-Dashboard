@@ -3,7 +3,7 @@ body {
     display: inline-block;
   }
 .cardContainer {
-  border: 1px solid #f00606;
+  /* border: 1px solid #f00606; */
   display: inline-block;
   display: flex;
   padding: 15 px;
@@ -14,5 +14,6 @@ body {
   padding: 10px;
   margin: 20px;
   background-color: blue;
-/* only the border seems to be working? */
+  color: white;
+
 }
