@@ -42,16 +42,15 @@ function handleSearcherSubmit(event) {
 				console.log(coordinates);
 				var lat = coordinates[0].lat;
 				var lon = coordinates[0].lon;
-				//console.log(lat, lon);
+				console.log("in the promise, the lat and lon are: " + lat, lon);
 				getToday(lat, lon); //passes lat and lon to the getToday function
 				getWeather(lat, lon); //passes lat and lon to the getWeather function
 			});
 	}
 	getLatLon();
-	console.log(lat);
 }
 function getToday(lat, lon) {
-	console.log(lat, lon);
+	console.log("the lat and lon are at this point: " + lat, lon);
 	var todayQueryURL =
 		"https://api.openweathermap.org/data/2.5/weather?lat=" +
 		lat +
@@ -73,7 +72,7 @@ function getToday(lat, lon) {
 			putTodayinDOM(weather1); //passes the weather object to putTodayinDOM
 		});
 }
-getToday(); //call the function
+//getToday(); //call the function
 
 //name, date, temperature, wind, humidity,for putTodayinDOM
 function putTodayinDOM(todaysStuff) {
