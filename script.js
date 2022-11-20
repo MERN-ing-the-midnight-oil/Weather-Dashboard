@@ -14,12 +14,11 @@ var rhysApiKey = "8efdcf6890084b049f69cd42d7792cd8";
 var scriptArray = []
 
 
-function handleSearcherSubmit(event) {
+function handleSearcherSubmit(event) { //This needs to somehow listen for a submit from the form called "searcher" in the HTML
 	event.preventDefault();
 	var cityInput = document.querySelector("#searcher-input").value; 
-	console.log("the city input is: " + cityInput);
+	console.log("the city input submitted is: " + cityInput);
 	getLatLon(cityInput);//when the user submits a city , send the city to getLatLon
-	updateOrCreateStorage(cityInput);//when the user submits a city, also send that city to updateOrCreateStorage
 }
 
 function getLatLon(cityInput) {
@@ -39,15 +38,18 @@ function getLatLon(cityInput) {
 				return response.json(); //rehydrates
 			})
 
-			.then(function (coordinates) {	updateStorage(cityInput);//puts the successful city name into the storage array
+			.then(function (coordinates) {	
 				//coordinates is now an object
 				//hopefully sets the response to a var called "coordinates"
-				console.log(coordinates);
+				console.log(coordinates+" is the coordinates object returned from the server");
 				var lat = coordinates[0].lat;
 				var lon = coordinates[0].lon;
-				if (lat === undefined || lon === undefined ) {
-					alert("the city name you chose isn't resulting in any coordinates");
-				} else {			getToday(lat, lon); //passes lat and lon to the getToday function
+				if (lat === undefined || lon === undefined ) {//if either lat or lon is undefined
+					alert("the city name you chose isn't resulting in any coordinates");//then alert
+					console.log("'the city name you chose isn't resulting in any coordinates'should have just appeared as an alert");
+				} else {			
+				updateOrCreateStorage(cityInput);//puts the successful city name into the storage array
+				getToday(lat, lon); //passes lat and lon to the getToday function
 				getWeather(lat, lon); //passes lat and lon to the getWeather function}
 				console.log("in the promise, the lat and lon are: " + lat, lon);
 			}
@@ -118,10 +120,10 @@ function putTodayinDOM(todaysStuff) {
 	var cardDiv = document.createElement("div");
 
 	var lineZero = document.createElement("div");
-	lineZero.innerHTML = city;
+	lineZero.innerHTML = city+" is today's city";//why isn't this showing up
 
 	var lineOne = document.createElement("div");
-	lineOne.innerHTML = date;
+	lineOne.innerHTML = date+" is today's date";//when this one IS showing up?
 
 	var lineTwo = document.createElement("div");
 	lineZero.innerHTML = "Temperature: " + Math.round(tempF) + " (Farenheit)";
