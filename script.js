@@ -1,27 +1,28 @@
 //Dom hooks for elements that will take input
 var searcherEl = document.querySelector("#searcher");
 var cardContainerEl = document.querySelector(".cardContainer");
+var todayContainerEl = document.querySelector(".todayContainer");
+//var cityButtonsEl = document.querySelector("")
 //DOM hooks for elements that will display feedback
 var todayEl = document.querySelector(".today");
 var tomorrowEl = document.querySelector("#tomorrow");
 var dayThreeEl = document.querySelector("#dayThree");
 var dayFourEl = document.querySelector("#dayFour");
 var dayFiveEl = document.querySelector("#dayFive");
-
+//misc vars
 var rhysApiKey = "8efdcf6890084b049f69cd42d7792cd8";
+var scriptArray = []
 
-//function to build the buttons will go here
 
 function handleSearcherSubmit(event) {
 	event.preventDefault();
-	//console.log("button clicks");
-	//takes the submit event and does stuff with it
-	var cityInput = document.querySelector("#searcher-input").value; ////gets the text (the city name) the user types in
-	//put something here to check in local storage, if null, add a new city, if cityInput is already existing, do nothing
-	//put something here to store the city name.  local storage will have only one key and value , value will be an array
-	//call the button builder function
+	var cityInput = document.querySelector("#searcher-input").value; 
+	console.log("the city input is: " + cityInput);
+	getLatLon(cityInput);//when the user submits a city , send the city to getLatLon
+	updateOrCreateStorage(cityInput);//when the user submits a city, also send that city to updateOrCreateStorage
+}
 
-	function getLatLon() {
+function getLatLon(cityInput) {
 		var latLonQueryUrl =
 			"https://api.openweathermap.org/geo/1.0/direct?q=" +
 			cityInput +
@@ -34,21 +35,51 @@ function handleSearcherSubmit(event) {
 				if (!response.ok) {
 					throw response.json();
 				}
+				console.log(response);
 				return response.json(); //rehydrates
 			})
-			.then(function (coordinates) {
+
+			.then(function (coordinates) {	updateStorage(cityInput);//puts the successful city name into the storage array
 				//coordinates is now an object
 				//hopefully sets the response to a var called "coordinates"
 				console.log(coordinates);
 				var lat = coordinates[0].lat;
 				var lon = coordinates[0].lon;
+				if (lat === undefined || lon === undefined ) {
+					alert("the city name you chose isn't resulting in any coordinates");
+				} else {			getToday(lat, lon); //passes lat and lon to the getToday function
+				getWeather(lat, lon); //passes lat and lon to the getWeather function}
 				console.log("in the promise, the lat and lon are: " + lat, lon);
-				getToday(lat, lon); //passes lat and lon to the getToday function
-				getWeather(lat, lon); //passes lat and lon to the getWeather function
+			}
+			
 			});
 	}
-	getLatLon();
+
+function updateOrCreateStorage(cityInput){//run this whenever user submits. makes an array called scriptArray and a local storage array and updates them .
+	var scriptArray = JSON.parse(localStorage.getItem("storageArray")); //gets whatever might be in local storage and assignes it to var scriptArray
+	if(scriptArray == null) {//if scriptArray is null because nothing was presently in storageArray , 
+		var scriptArray = [cityInput];//go ahead and fill scriptArray from the most recent user input instead.
+		localStorage.setItem("storageArray", JSON.stringify(scriptArray));//and then also store it in local storage for next time.
+	} else{
+		scriptArray.unshift(cityInput);//if there already is something in local storage, grab that for the script array
+		localStorage.setItem("storageArray", JSON.stringify(scriptArray));	
+	}
 }
+
+
+	
+	//make a button, get the city name for the button from local storage
+//event listener on a button container
+	//if it gets a click, collect the city name from the button. 
+
+
+	//call the button builder function
+
+
+
+
+
+
 function getToday(lat, lon) {
 	console.log("the lat and lon are at this point: " + lat, lon);
 	var todayQueryURL =
@@ -63,7 +94,7 @@ function getToday(lat, lon) {
 		.then(function (response) {
 			//waiting for fetch promise to resolve
 			if (!response.ok) {
-				throw response.json();
+				throw response.json();//TODO something should alert if garbage is given
 			}
 			return response.json(); //rehydrates
 		})
@@ -72,34 +103,41 @@ function getToday(lat, lon) {
 			putTodayinDOM(weather1); //passes the weather object to putTodayinDOM
 		});
 }
-//getToday(); //call the function
+getToday(); //call the function
 
 //name, date, temperature, wind, humidity,for putTodayinDOM
 function putTodayinDOM(todaysStuff) {
-	cardContainerEl.innerHTML = ""; //clears previous weather reports
+	todayContainerEl.innerHTML = ""; //clears previous weather reports
 	var city = todaysStuff.name;
-	var date = moment();
+	var date = moment().format("MMM Do YY"); 
+	console.log(date+" . is the moment as mm do yy");
 	var tempK = todaysStuff.main.temp;
 	var tempF = (tempK - 273.15) * (9 / 5) + 32;
 	var wind = todaysStuff.wind.speed;
 	var humidity = todaysStuff.main.humidity;
 	var cardDiv = document.createElement("div");
+
 	var lineZero = document.createElement("div");
 	lineZero.innerHTML = city;
+
 	var lineOne = document.createElement("div");
-	lineZero.innerHTML = date;
+	lineOne.innerHTML = date;
+
 	var lineTwo = document.createElement("div");
 	lineZero.innerHTML = "Temperature: " + Math.round(tempF) + " (Farenheit)";
+
 	var lineThree = document.createElement("div");
-	lineZero.innerHTML = "Wind Speed: " + wind + "MPH";
+	lineThree.innerHTML = "Wind Speed: " + wind + "MPH";
+
 	var lineFour = document.createElement("div");
-	lineZero.innerHTML = "Humidity: " + humidity + "%";
+	lineFour.innerHTML = "Humidity: " + humidity + "%";
+
 	cardDiv.appendChild(lineZero); //These five lines append the five weather stats to cardDiv...
 	cardDiv.appendChild(lineOne);
 	cardDiv.appendChild(lineTwo);
 	cardDiv.appendChild(lineThree);
 	cardDiv.appendChild(lineFour);
-	cardContainerEl.appendChild(cardDiv); //... and this appends cardDiv to the cardContainerEl
+	todayContainerEl.appendChild(cardDiv); //... and this appends cardDiv to the cardContainerEl
 }
 function getWeather(lat, lon) {
 	//receives lat and lon as first and second things passed
@@ -138,15 +176,20 @@ function putWeatherinDOM(weatherstuff) {
 		cardDiv.classList.add("individualCard"); //trhying this out
 
 		var lineZero = document.createElement("div");
-		lineZero.innerHTML = city;
+		//lineZero.innerHTML = cityInput; //city?
+
 		var lineOne = document.createElement("div");
 		lineOne.innerHTML = date;
+
 		var lineTwo = document.createElement("div");
 		lineTwo.innerHTML = "Temperature: " + Math.round(tempF) + " (Farenheit)";
+
 		var lineThree = document.createElement("div");
 		lineThree.innerHTML = "Wind Speed: " + wind + "MPH";
+
 		var lineFour = document.createElement("div");
 		lineFour.innerHTML = "Humidity: " + humidity + "%";
+
 		cardDiv.appendChild(lineZero); //These five lines append the five weather stats to cardDiv...
 		cardDiv.appendChild(lineOne);
 		cardDiv.appendChild(lineTwo);

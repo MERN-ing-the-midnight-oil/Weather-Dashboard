@@ -4,6 +4,8 @@ This application gives the current weather and the next five days of predicted w
 
 ## Screenshot
 
+Weather Dashboard.png
+
 ## Link to Deployed App
 
 https://noctiluca-scintillans.github.io/Weather-Dashboard/
