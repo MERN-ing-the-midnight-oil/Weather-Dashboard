@@ -35,27 +35,20 @@ function makeButtons(scriptArray){//receives scriptArray, a list of previously s
 	buttonContainerEl.appendChild(cityButton); //appends the button onto the button container
 	}
 }
-
-
-
-
 function getLatLon(cityInput) {
 		var latLonQueryUrl =
 			"https://api.openweathermap.org/geo/1.0/direct?q=" +
 			cityInput +
 			"&appid=" +
 			rhysApiKey;
-
 		fetch(latLonQueryUrl)
 			.then(function (response) {
 				if (!response.ok) {
 					alert("the city name you chose isn't resulting in any coordinates");
 					throw response.json();
-					
 				}
 				console.log(response);
 				return response.json(); //rehydrates
-
 			})
 			.then(function (coordinates) {	
 				console.log("coordinates object to follow");
@@ -71,7 +64,6 @@ function getLatLon(cityInput) {
 				getToday(lat, lon); //passes lat and lon to the getToday function
 				getWeather(lat, lon); //passes lat and lon to the getWeather function}
 			}
-			
 			});
 	}
 function getToday(lat, lon) {
@@ -96,16 +88,12 @@ function getToday(lat, lon) {
 			putTodayinDOM(weather1); //passes the weather object to putTodayinDOM
 		});
 }
-
-
-//name, date, temperature, wind, humidity,for putTodayinDOM
 function putTodayinDOM(todaysStuff) {
 todayContainerEl.innerHTML = ""; //clears previous "Today" weather reports
 console.log(todaysStuff+" . is totaysStuff");
 
 	var city = todaysStuff.name;
 	var date = moment().format("MMM Do YY"); 
-	console.log(date+" . is the moment as mm do yy");
 	var tempK = todaysStuff.main.temp;
 	var tempF = (tempK - 273.15) * (9 / 5) + 32;
 	var wind = todaysStuff.wind.speed;
@@ -113,7 +101,6 @@ console.log(todaysStuff+" . is totaysStuff");
 
 	var cardDiv = document.createElement("div");
 	cardDiv.classList.add("todayCard"); //gives styling to the today forcast
-
 
 	var examplez = document.createElement("div");
 	examplez.innerHTML = "examplez";
@@ -159,7 +146,6 @@ function getWeather(lat, lon) {
 			return response.json(); //rehydrates
 		})
 		.then(function (weather) {
-			console.log(weather);
 			putWeatherinDOM(weather); //passes the weather object to putWeatherinDOM
 		});
 }
@@ -199,19 +185,14 @@ function putWeatherinDOM(weatherstuff) {
 		cardContainerEl.appendChild(cardDiv); //... and this appends cardDiv to the cardContainerEl
 	}
 }
-
 searcherEl.addEventListener("submit", handleSearcherSubmit); // executes handleSearcherSubmit when a form submit happens to searcherEl
 function handleSearcherSubmit(event) { //This needs to somehow listen for a submit from the form called "searcher" in the HTML
 	event.preventDefault();
 	var cityInput = document.querySelector("#searcher-input").value; 
-	console.log("the city input submitted is: " + cityInput);
 	getLatLon(cityInput);//calls getLatLon which in turn calls getToday (which calls putTodayinDom) and getWeather(which calls putWeatherinDOM)
 	updateOrCreateStorage(cityInput)
 }
-
 buttonContainerEl.addEventListener("click", function (event) {
 	var buttonText = $(event.target).text();//grabs the city name text from the button and calls it buttonText
-	//run lat lon using buttonText
 	getLatLon(buttonText);//hands off the city name from the button text to getLatLon, same as submitting from the form submit.
 })
-//var buttonContainerEl = document.querySelector(".buttonContainer");
