@@ -2,6 +2,7 @@
 var searcherEl = document.querySelector("#searcher");
 var cardContainerEl = document.querySelector(".cardContainer");
 var todayContainerEl = document.querySelector(".todayContainer");
+var buttonContainerEl = document.querySelector(".buttonContainer");
 //var cityButtonsEl = document.querySelector("")
 //DOM hooks for elements that will display feedback
 var todayEl = document.querySelector(".today");
@@ -13,7 +14,27 @@ var dayFiveEl = document.querySelector("#dayFive");
 var rhysApiKey = "8efdcf6890084b049f69cd42d7792cd8";
 var scriptArray = []
 
+function updateOrCreateStorage(cityInput){//run this whenever user submits. makes an array called scriptArray and a local storage array and updates them .
+	var scriptArray = JSON.parse(localStorage.getItem("storageArray")); //gets whatever might be in local storage and assignes it to var scriptArray
+	if(scriptArray == null) {//if scriptArray is null because nothing was presently in storageArray , 
+		var scriptArray = [cityInput];//go ahead and fill scriptArray from the most recent user input instead.
+		localStorage.setItem("storageArray", JSON.stringify(scriptArray));//and then also store it in local storage for next time.
+	} else{
+		scriptArray.unshift(cityInput);//if there already is something in local storage, grab that for the script array
+		localStorage.setItem("storageArray", JSON.stringify(scriptArray));	
+	}
+	console.log("at the end of updateOrCreateStorage the scriptArray is: " + JSON.stringify(scriptArray));
+	makeButtons(scriptArray);
+}
 
+function makeButtons(scriptArray){//receives scriptArray, a list of previously selected cities, and makes buttons for each city.
+	buttonContainerEl.innerHTML =""; //clears previous buttons
+	for (let i = 0; i < scriptArray.length; i++) {
+	var cityButton = document.createElement("button");//makes a button but doesn't put it anywhere
+	cityButton.innerHTML = scriptArray[i]; //gives the button text from scriptArray
+	buttonContainerEl.appendChild(cityButton); //appends the button onto the button container
+	}
+}
 function handleSearcherSubmit(event) { //This needs to somehow listen for a submit from the form called "searcher" in the HTML
 	event.preventDefault();
 	var cityInput = document.querySelector("#searcher-input").value; 
@@ -59,16 +80,7 @@ function getLatLon(cityInput) {
 			});
 	}
 
-function updateOrCreateStorage(cityInput){//run this whenever user submits. makes an array called scriptArray and a local storage array and updates them .
-	var scriptArray = JSON.parse(localStorage.getItem("storageArray")); //gets whatever might be in local storage and assignes it to var scriptArray
-	if(scriptArray == null) {//if scriptArray is null because nothing was presently in storageArray , 
-		var scriptArray = [cityInput];//go ahead and fill scriptArray from the most recent user input instead.
-		localStorage.setItem("storageArray", JSON.stringify(scriptArray));//and then also store it in local storage for next time.
-	} else{
-		scriptArray.unshift(cityInput);//if there already is something in local storage, grab that for the script array
-		localStorage.setItem("storageArray", JSON.stringify(scriptArray));	
-	}
-}
+
 
 
 	
@@ -111,8 +123,7 @@ function getToday(lat, lon) {
 
 //name, date, temperature, wind, humidity,for putTodayinDOM
 function putTodayinDOM(todaysStuff) {
-	todayContainerEl.innerHTML = ""; //clears previous "Today" weather reports
-	cardContainerEl.innerHTML = "";//hopefully clears the previous weather reports
+todayContainerEl.innerHTML = ""; //clears previous "Today" weather reports
 console.log(todaysStuff+" . is totaysStuff");
 
 	var city = todaysStuff.name;
@@ -175,8 +186,9 @@ function getWeather(lat, lon) {
 			putWeatherinDOM(weather); //passes the weather object to putWeatherinDOM
 		});
 }
-cardContainerEl.innerHTML = ""; //clears previous weather reports
 function putWeatherinDOM(weatherstuff) {
+	cardContainerEl.innerHTML = ""; //clears previous weather reports
+
 	for (let i = 0; i < 35; i = i + 8) {
 		var city = weatherstuff.city.name;
 		var date = weatherstuff.list[i].dt_txt;
