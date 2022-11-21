@@ -35,14 +35,9 @@ function makeButtons(scriptArray){//receives scriptArray, a list of previously s
 	buttonContainerEl.appendChild(cityButton); //appends the button onto the button container
 	}
 }
-function handleSearcherSubmit(event) { //This needs to somehow listen for a submit from the form called "searcher" in the HTML
-	event.preventDefault();
-	var cityInput = document.querySelector("#searcher-input").value; 
-	console.log("the city input submitted is: " + cityInput);
-	getLatLon(cityInput);//calls getLatLon which in turn calls getToday (which calls putTodayinDom) and getWeather(which calls putWeatherinDOM)
-	updateOrCreateStorage(cityInput)
-	
-}
+
+
+
 
 function getLatLon(cityInput) {
 		var latLonQueryUrl =
@@ -79,23 +74,6 @@ function getLatLon(cityInput) {
 			
 			});
 	}
-
-
-
-
-	
-	//make a button, get the city name for the button from local storage
-//event listener on a button container
-	//if it gets a click, collect the city name from the button. 
-
-
-	//call the button builder function
-
-
-
-
-
-
 function getToday(lat, lon) {
 	console.log("the lat and lon are at this point in getToday: " + lat, lon);
 	var todayQueryURL =
@@ -108,11 +86,10 @@ function getToday(lat, lon) {
 	console.log(todayQueryURL);
 	fetch(todayQueryURL)
 		.then(function (response) {
-			//waiting for fetch promise to resolve
 			if (!response.ok) {
-				throw response.json();//TODO something should alert if garbage is given
+				throw response.json();
 			}
-			return response.json(); //rehydrates
+			return response.json(); 
 		})
 		.then(function (weather1) {
 			console.log(weather1);
@@ -222,19 +199,19 @@ function putWeatherinDOM(weatherstuff) {
 		cardContainerEl.appendChild(cardDiv); //... and this appends cardDiv to the cardContainerEl
 	}
 }
+
 searcherEl.addEventListener("submit", handleSearcherSubmit); // executes handleSearcherSubmit when a form submit happens to searcherEl
-//cardDiv.classList.add("individualCard");
-//	buttonContainer.innerHTML = ""; //This gets rid of the previous question if one is there so only one question displays at once
+function handleSearcherSubmit(event) { //This needs to somehow listen for a submit from the form called "searcher" in the HTML
+	event.preventDefault();
+	var cityInput = document.querySelector("#searcher-input").value; 
+	console.log("the city input submitted is: " + cityInput);
+	getLatLon(cityInput);//calls getLatLon which in turn calls getToday (which calls putTodayinDom) and getWeather(which calls putWeatherinDOM)
+	updateOrCreateStorage(cityInput)
+}
 
-//Adding data to local storage/////// from day scheduler app
-// 	var textvalue = $(this).siblings(".textarea").val(); //textvalue gets the value of the sibling with textarea class
-// 	var key = $(this).siblings(".textarea").attr("id"); // key gets the specific id of the textarea that is a sibling of "this" (this being the button that was clicked on)
-// 	localStorage.setItem(key, textvalue); //local storage gets the var key and the var textvalue as the key value pair
-// 	//put a "key" and a "value " into local storage
-// 	// key =(Btn to textarea to textarea ID)
-// });
-
-//use localStorage.getitem
-//use json to parse the array
-//var will get the array
-//use the array values to populate the buttons
+buttonContainerEl.addEventListener("click", function (event) {
+	var buttonText = $(event.target).text();//grabs the city name text from the button and calls it buttonText
+	//run lat lon using buttonText
+	getLatLon(buttonText);//hands off the city name from the button text to getLatLon, same as submitting from the form submit.
+})
+//var buttonContainerEl = document.querySelector(".buttonContainer");
