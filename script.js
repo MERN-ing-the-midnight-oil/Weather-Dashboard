@@ -23,7 +23,6 @@ function updateOrCreateStorage(cityInput){//run this whenever user submits. make
 		scriptArray.unshift(cityInput);//if there already is something in local storage, grab that for the script array
 		localStorage.setItem("storageArray", JSON.stringify(scriptArray));	
 	}
-	console.log("at the end of updateOrCreateStorage the scriptArray is: " + JSON.stringify(scriptArray));
 	makeButtons(scriptArray);
 }
 
@@ -47,13 +46,9 @@ function getLatLon(cityInput) {
 					alert("the city name you chose isn't resulting in any coordinates");
 					throw response.json();
 				}
-				console.log(response);
 				return response.json(); //rehydrates
 			})
 			.then(function (coordinates) {	
-				console.log("coordinates object to follow");
-				console.log(coordinates);
-				console.log("coordinates previous)");
 				if (coordinates.length==0){//sometimes the weather API returns an empty array instead of throwing a 400 or 404 so...
 					alert("the city name you chose isn't resulting in any coordinates");//then alert
 				}
@@ -67,7 +62,6 @@ function getLatLon(cityInput) {
 			});
 	}
 function getToday(lat, lon) {
-	console.log("the lat and lon are at this point in getToday: " + lat, lon);
 	var todayQueryURL =
 		"https://api.openweathermap.org/data/2.5/weather?lat=" +
 		lat +
@@ -75,7 +69,6 @@ function getToday(lat, lon) {
 		lon +
 		"&appid=" +
 		rhysApiKey;
-	console.log(todayQueryURL);
 	fetch(todayQueryURL)
 		.then(function (response) {
 			if (!response.ok) {
@@ -84,15 +77,14 @@ function getToday(lat, lon) {
 			return response.json(); 
 		})
 		.then(function (weather1) {
-			console.log(weather1);
 			putTodayinDOM(weather1); //passes the weather object to putTodayinDOM
 		});
 }
 function putTodayinDOM(todaysStuff) {
 todayContainerEl.innerHTML = ""; //clears previous "Today" weather reports
-console.log(todaysStuff+" . is totaysStuff");
 
-	var city = todaysStuff.name;
+	var city = todaysStuff.name; // Why the heck won't this appear in the DOM????????
+	console.log(todaysStuff.name+" is the name of the city that for some reason won't appear along with the date, temp, wind and humidity");
 	var date = moment().format("MMM Do YY"); 
 	var tempK = todaysStuff.main.temp;
 	var tempF = (tempK - 273.15) * (9 / 5) + 32;
@@ -106,19 +98,19 @@ console.log(todaysStuff+" . is totaysStuff");
 	examplez.innerHTML = "examplez";
 
 	var lineZero = document.createElement("div");
-	lineZero.innerHTML = city;//DOES NOT SHOW UP
+	lineZero.innerHTML = city;//WHY WONT THIS SHOW UP IN THE DOM????
 
 	var lineOne = document.createElement("div");
-	lineOne.innerHTML = date;+" is today's date";//shows up
+	lineOne.innerHTML = date;+" is today's date";//shows up fine
 
 	var lineTwo = document.createElement("div");
-	lineZero.innerHTML = "Temperature: " + Math.round(tempF) + " (Farenheit)";//shows up
+	lineZero.innerHTML = "Temperature: " + Math.round(tempF) + " (Farenheit)";//shows up fine
 
 	var lineThree = document.createElement("div");
-	lineThree.innerHTML = "Wind Speed: " + wind + "MPH";//shows up
+	lineThree.innerHTML = "Wind Speed: " + wind + "MPH";//shows up fine
 
 	var lineFour = document.createElement("div");
-	lineFour.innerHTML = "Humidity: " + humidity + "%";//shows up
+	lineFour.innerHTML = "Humidity: " + humidity + "%";//shows up fine
 
 	cardDiv.appendChild(lineZero); //These five lines append the five weather stats to cardDiv...
 	cardDiv.appendChild(lineOne);
