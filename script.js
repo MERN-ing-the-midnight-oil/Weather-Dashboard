@@ -18,7 +18,9 @@ function handleSearcherSubmit(event) { //This needs to somehow listen for a subm
 	event.preventDefault();
 	var cityInput = document.querySelector("#searcher-input").value; 
 	console.log("the city input submitted is: " + cityInput);
-	getLatLon(cityInput);//when the user submits a city , send the city to getLatLon
+	getLatLon(cityInput);//calls getLatLon which in turn calls getToday (which calls putTodayinDom) and getWeather(which calls putWeatherinDOM)
+	updateOrCreateStorage(cityInput)
+	
 }
 
 function getLatLon(cityInput) {
@@ -30,28 +32,28 @@ function getLatLon(cityInput) {
 
 		fetch(latLonQueryUrl)
 			.then(function (response) {
-				//waiting for fetch promise to resolve
 				if (!response.ok) {
+					alert("the city name you chose isn't resulting in any coordinates");
 					throw response.json();
+					
 				}
 				console.log(response);
 				return response.json(); //rehydrates
-			})
 
+			})
 			.then(function (coordinates) {	
-				//coordinates is now an object
-				//hopefully sets the response to a var called "coordinates"
-				console.log(coordinates+" is the coordinates object returned from the server");
-				var lat = coordinates[0].lat;
-				var lon = coordinates[0].lon;
-				if (lat === undefined || lon === undefined ) {//if either lat or lon is undefined
+				console.log("coordinates object to follow");
+				console.log(coordinates);
+				console.log("coordinates previous)");
+				if (coordinates.length==0){//sometimes the weather API returns an empty array instead of throwing a 400 or 404 so...
 					alert("the city name you chose isn't resulting in any coordinates");//then alert
-					console.log("'the city name you chose isn't resulting in any coordinates'should have just appeared as an alert");
-				} else {			
-				updateOrCreateStorage(cityInput);//puts the successful city name into the storage array
+				}
+				else {		
+				var lat = coordinates[0].lat;
+				var lon = coordinates[0].lon;	
+				//updateOrCreateStorage(cityInput);//puts the successful city name into the storage array
 				getToday(lat, lon); //passes lat and lon to the getToday function
 				getWeather(lat, lon); //passes lat and lon to the getWeather function}
-				console.log("in the promise, the lat and lon are: " + lat, lon);
 			}
 			
 			});
@@ -83,7 +85,7 @@ function updateOrCreateStorage(cityInput){//run this whenever user submits. make
 
 
 function getToday(lat, lon) {
-	console.log("the lat and lon are at this point: " + lat, lon);
+	console.log("the lat and lon are at this point in getToday: " + lat, lon);
 	var todayQueryURL =
 		"https://api.openweathermap.org/data/2.5/weather?lat=" +
 		lat +
@@ -105,7 +107,7 @@ function getToday(lat, lon) {
 			putTodayinDOM(weather1); //passes the weather object to putTodayinDOM
 		});
 }
-getToday(); //call the function
+
 
 //name, date, temperature, wind, humidity,for putTodayinDOM
 function putTodayinDOM(todaysStuff) {
