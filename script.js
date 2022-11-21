@@ -111,7 +111,10 @@ function getToday(lat, lon) {
 
 //name, date, temperature, wind, humidity,for putTodayinDOM
 function putTodayinDOM(todaysStuff) {
-	todayContainerEl.innerHTML = ""; //clears previous weather reports
+	todayContainerEl.innerHTML = ""; //clears previous "Today" weather reports
+	cardContainerEl.innerHTML = "";//hopefully clears the previous weather reports
+console.log(todaysStuff+" . is totaysStuff");
+
 	var city = todaysStuff.name;
 	var date = moment().format("MMM Do YY"); 
 	console.log(date+" . is the moment as mm do yy");
@@ -119,22 +122,28 @@ function putTodayinDOM(todaysStuff) {
 	var tempF = (tempK - 273.15) * (9 / 5) + 32;
 	var wind = todaysStuff.wind.speed;
 	var humidity = todaysStuff.main.humidity;
+
 	var cardDiv = document.createElement("div");
+	cardDiv.classList.add("todayCard"); //gives styling to the today forcast
+
+
+	var examplez = document.createElement("div");
+	examplez.innerHTML = "examplez";
 
 	var lineZero = document.createElement("div");
-	lineZero.innerHTML = city+" is today's city";//why isn't this showing up
+	lineZero.innerHTML = city;//DOES NOT SHOW UP
 
 	var lineOne = document.createElement("div");
-	lineOne.innerHTML = date+" is today's date";//when this one IS showing up?
+	lineOne.innerHTML = date;+" is today's date";//shows up
 
 	var lineTwo = document.createElement("div");
-	lineZero.innerHTML = "Temperature: " + Math.round(tempF) + " (Farenheit)";
+	lineZero.innerHTML = "Temperature: " + Math.round(tempF) + " (Farenheit)";//shows up
 
 	var lineThree = document.createElement("div");
-	lineThree.innerHTML = "Wind Speed: " + wind + "MPH";
+	lineThree.innerHTML = "Wind Speed: " + wind + "MPH";//shows up
 
 	var lineFour = document.createElement("div");
-	lineFour.innerHTML = "Humidity: " + humidity + "%";
+	lineFour.innerHTML = "Humidity: " + humidity + "%";//shows up
 
 	cardDiv.appendChild(lineZero); //These five lines append the five weather stats to cardDiv...
 	cardDiv.appendChild(lineOne);
@@ -168,7 +177,6 @@ function getWeather(lat, lon) {
 }
 cardContainerEl.innerHTML = ""; //clears previous weather reports
 function putWeatherinDOM(weatherstuff) {
-	//cardContainerEl.innerHTML = ""; //clears previous weather reports
 	for (let i = 0; i < 35; i = i + 8) {
 		var city = weatherstuff.city.name;
 		var date = weatherstuff.list[i].dt_txt;
@@ -177,10 +185,10 @@ function putWeatherinDOM(weatherstuff) {
 		var wind = weatherstuff.list[i].wind.speed;
 		var humidity = weatherstuff.list[i].main.humidity;
 		var cardDiv = document.createElement("div");
-		cardDiv.classList.add("individualCard"); //trhying this out
-
+		cardDiv.classList.add("individualCard"); //gives styling to the five day forcast cards
+	
 		var lineZero = document.createElement("div");
-		//lineZero.innerHTML = cityInput; //city?
+		lineZero.innerHTML = city; //city?
 
 		var lineOne = document.createElement("div");
 		lineOne.innerHTML = date;

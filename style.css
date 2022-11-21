@@ -1,7 +1,8 @@
 body {
-    font-family: 'Fira Sans', sans-serif;
-    display: inline-block;
-  }
+  font-family: 'Fira Sans', sans-serif;
+  display: inline-block;
+}
+
 .cardContainer {
   /* border: 1px solid #f00606; */
   display: inline-block;
@@ -9,11 +10,21 @@ body {
   padding: 15 px;
   margin: 4 px;
 }
-.individualCard{
+
+.individualCard {
   border: 3px solid #42f207;
   padding: 10px;
   margin: 20px;
   background-color: blue;
   color: white;
+
+}
+
+.todayCard {
+  border: 3px solid #42f207;
+  padding: 10px;
+  margin: 20px;
+  background-color: rgb(255, 0, 225);
+  color: rgb(16, 4, 238);
 
 }
